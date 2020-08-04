@@ -1,0 +1,132 @@
+<mat-card
+        style="width: 825px; text-align: center; margin: auto;align-content: center;">
+        <mat-card-title>Fill out the forms below to register information. </mat-card-title>
+        <mat-card-content>After filling out child information, click on the green button
+        to add more children. Click submit to advance to the confirmation page</mat-card-content>
+</mat-card>
+<br>
+<mat-card [formGroup]="parentForm" class="parentForm"
+        style="width: 850px; align-content: center; display: inline-block; position: absolute; left: 50%; margin-left: -475px">
+        <h3 style="color:#000000;">Parent Information</h3>
+        <mat-divider></mat-divider>
+        <mat-form-field style="width: 400px">
+                <input matInput placeholder="First Name" formControlName="parentFirstName"
+                        [value]='parentInfoObject.FirstName' charOnly maxlength="30" required #first>
+        </mat-form-field>
+        <mat-form-field class="childInput" style="width: 400px">
+                <input matInput placeholder="Last Name" formControlName="parentLastName"
+                        [value]='parentInfoObject.LastName' charOnly maxlength="30" required #last>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field style="width: 100%">
+                <input matInput placeholder="Address" formControlName="parentAddress" [value]='parentInfoObject.Address'
+                        required maxlength="50" #address>
+                <mat-hint>Example: 1234 Main St.</mat-hint>
+        </mat-form-field>
+        <br><br>
+
+        <mat-form-field style="width: 290px">
+                <input matInput placeholder="City" formControlName="parentCity" [value]='parentInfoObject.City' charOnly
+                 maxlength="30"required #city>
+        </mat-form-field>
+
+        <mat-form-field class="childInput" style="width: 69px">
+                <select matNativeControl placeholder="State" formControlName="parentState"
+                        [value]='parentInfoObject.State' required #state>
+                        <option value="AL">AL</option>
+                        <option value="AK">AK</option>
+                        <option value="AR">AR</option>
+                        <option value="AZ">AZ</option>
+                        <option value="CA">CA</option>
+                        <option value="CO">CO</option>
+                        <option value="CT">CT</option>
+                        <option value="DC">DC</option>
+                        <option value="DE">DE</option>
+                        <option value="FL">FL</option>
+                        <option value="GA">GA</option>
+                        <option value="HI">HI</option>
+                        <option value="IA">IA</option>
+                        <option value="ID">ID</option>
+                        <option value="IL">IL</option>
+                        <option value="IN">IN</option>
+                        <option value="KS">KS</option>
+                        <option value="KY">KY</option>
+                        <option value="LA">LA</option>
+                        <option value="MA">MA</option>
+                        <option value="MD">MD</option>
+                        <option value="ME">ME</option>
+                        <option value="MI">MI</option>
+                        <option value="MN">MN</option>
+                        <option value="MO">MO</option>
+                        <option value="MS">MS</option>
+                        <option value="MT">MT</option>
+                        <option value="NC">NC</option>
+                        <option value="NE">NE</option>
+                        <option value="NH">NH</option>
+                        <option value="NJ" selected="selected">NJ</option>
+                        <option value="NM">NM</option>
+                        <option value="NV">NV</option>
+                        <option value="NY">NY</option>
+                        <option value="ND">ND</option>
+                        <option value="OH">OH</option>
+                        <option value="OK">OK</option>
+                        <option value="OR">OR</option>
+                        <option value="PA">PA</option>
+                        <option value="RI">RI</option>
+                        <option value="SC">SC</option>
+                        <option value="SD">SD</option>
+                        <option value="TN">TN</option>
+                        <option value="TX">TX</option>
+                        <option value="UT">UT</option>
+                        <option value="VT">VT</option>
+                        <option value="VA">VA</option>
+                        <option value="WA">WA</option>
+                        <option value="WI">WI</option>
+                        <option value="WV">WV</option>
+                        <option value="WY">WY</option>
+                </select>
+        </mat-form-field>
+
+        <mat-form-field class="childInput" style="width: 110px">
+                <input matInput placeholder="ZIP Code" formControlName="parentZIP" [value]='parentInfoObject.ZipCode'
+                        numOnly maxlength="5" (keyup)="findCounty(zip.value)" required #zip>
+        </mat-form-field>
+
+        <mat-form-field class="childInput" style="width: 281px">
+                <input matInput placeholder="County" formControlName="parentCounty" [value]='parentInfoObject.County'
+                        charOnly maxlength="30" required #county>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field style="width: 400px">
+                <input matInput formControlName='parentDOB' placeholder="Birth Date" [value]='parentInfoObject.DOB'
+                        required  #DOB>
+                <mat-hint>mm / dd / yyyy</mat-hint>
+                <!---I took this out because if we use the datepicker we cannot fill the field using the data from our scanned patrons section -->
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                <!-- <mat-datepicker #picker></mat-datepicker> -->
+        </mat-form-field>
+
+        <mat-form-field class="childInput" style="width: 400px">
+                <input matInput placeholder="Phone Number" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                        formControlName="parentPhone" [value]='parentInfoObject.PhoneNumber' required numOnly #phone>
+                <mat-hint>Example: 1234567890</mat-hint>
+        </mat-form-field>
+
+        <h3 style="color:#000000;">Children Information</h3>
+
+        <div *ngFor="let child of childArray">
+                <span class="col s11" style="padding-left: 10px; line-height:1.5"> {{ child.fname }} {{ child.lname }}
+                        {{ child.DOB}}</span>
+                <span style="float:right; padding-right: 10px;">
+                        <a class="col s1" (click)="deleteChild(child)">&#x2716;</a>
+                </span>
+        </div>
+
+        <app-childinfo></app-childinfo>
+        <br>
+        <button mat-raised-button style="width: 200px; background-color: #A2C93A; color: white" class="right"
+                id="submit"
+                (click)="submit(first.value, last.value, address.value, city.value, state.value, zip.value, county.value, DOB.value, phone.value, parentInfoObject.id)">Submit</button>
+</mat-card>
